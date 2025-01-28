@@ -110,7 +110,7 @@ function DropBox-Upload {
     Invoke-RestMethod -Uri https://content.dropboxapi.com/2/files/upload -Method Post -InFile $SourceFilePath -Headers $headers
 }
 
-if (-not ([string]::IsNullOrEmpty($db))){DropBox-Upload -f $env:TMP\$FileName}
+DropBox-Upload -f $env:TMP\$FileName
 
 #------------------------------------------------------------------------------------------------------------------------------------
 

